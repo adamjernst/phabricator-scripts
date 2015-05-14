@@ -183,7 +183,14 @@ injectJS(function(global) {
       'Arcanist Project': null,
       'Repository': null,
       'Commits': null,
-      'Land': null,
+      'Land': function(node){
+        var button = $('a.button', node);
+        if (button) {
+          return true;
+        } else {
+          return null;
+        }
+      },
       'Depends On': null,
       'Next Step': null,
       'Complete Test Run': function(node){
@@ -225,7 +232,10 @@ injectJS(function(global) {
         var sectionFunction = sections[key];
         if (sectionFunction != null) {
           var sectionSummary = sectionFunction(valueNode);
-          if (sectionSummary != null) {
+          if (sectionSummary === true) {
+            // Show this section.
+            return;
+          } else if (sectionSummary != null) {
             sectionSummaries[key] = sectionSummary;
           }
         }
