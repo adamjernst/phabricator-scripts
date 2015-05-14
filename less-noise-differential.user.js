@@ -134,7 +134,7 @@ injectJS(function(global) {
       'Holodeck': function(node){
         // Holodeck's iframe has some weird sizing bugs if we hide it now and show it later.
         // Just nuke the whole thing.
-        node.innerHTML = '<a href="#complex">Show Holodeck</a>';
+        node.innerHTML = '<a class="phabricatordefault-a" href="#complex">Show Holodeck</a>';
         return null;
       },
       'Lint': function(node){
@@ -143,7 +143,9 @@ injectJS(function(global) {
         }
         var errors = $$('.differential-results-row-red', node).length;
         var warnings = $$('.differential-results-row-yellow', node).length;
-        var infos = $$('.differential-results-row-blue', node).length;
+        var infos = $$('.differential-results-row-blue', node).filter(function(infoNode){
+          return infoNode.textContent.indexOf('Postponed') == -1;
+        }).length;
         var info = [];
         if (errors != 0) {
           info.push(errors.toString() + ' Lint Error' + (errors == 1 ? '' : 's'));
@@ -156,7 +158,12 @@ injectJS(function(global) {
         }
         if (info.length != 0) {
           return info.join(', ');
+        } else if (node.textContent.indexOf('Lint Postponed') != -1) {
+          // If we didn't find any errors/warnings/infos, *and* it was postponed,
+          // hide it by default.
+          return null;
         } else {
+          // Not sure what's going on here.
           return 'Lint Issues';
         }
       },
