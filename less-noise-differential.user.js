@@ -19,6 +19,7 @@ function injectStyles(styles) {
 }
 
 injectStyles(
+  // Instead of showing reviewers as a table, display them inline.
   '.less-noise-reviewers tr {' +
     'display: inline-block;' +
   '}' +
@@ -28,9 +29,11 @@ injectStyles(
   '.less-noise-reviewers .phui-status-item-target {' +
     'padding-right: 0;' +
   '}' +
+  // Overrides margin-left: -4px
   '.less-noise-reviewers table {' +
-    'margin-left: 0 !important;' + // Overrides margin-left: -4px
+    'margin-left: 0 !important;' +
   '}' +
+  // If the "more" section is hiding errors, make it red
   '.more-hiding-errors {' +
     'color: #f00;' +
   '}'
@@ -60,6 +63,7 @@ injectJS(function(global) {
     var hiddenSidebarItems = [];
     $$('li.phabricator-action-view', sidebar).forEach(function(sidebarItem){
       var text = sidebarItem.textContent.trim();
+      // Remove <X> Flag should be visible by default
       if (text.indexOf('Remove ') == 0 && text.indexOf('Flag') != -1) {
         return;
       }
