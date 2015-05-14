@@ -177,6 +177,8 @@ injectJS(function(global) {
       'Repository': null,
       'Commits': null,
       'Land': null,
+      'Depends On': null,
+      'Next Step': null,
       'Complete Test Run': function(node){
         var re = /(\d+) failures? not in trunk/;
         var match = node.textContent.match(re);
